@@ -4,17 +4,22 @@
 \alias{AMPD}
 \title{AMPD}
 \usage{
-AMPD(data, L, plotting = FALSE)
+AMPD(data, L = NaN, extended = FALSE, splitting = FALSE,
+  splittingSize = NaN)
 }
 \arguments{
-\item{data}{list containing noisy data}
+\item{data}{list containing noisy data with quasi-periodic distribution of local maxima}
 
-\item{L, }{maximum number of scales (corresponding tothe maximum width of the window used)}
+\item{L, }{maximum number of scales (corresponding to the maximum width of the window used)}
 
-\item{plotting}{default FALSE, plots useful information if TRUE}
+\item{extended}{default FALSE, if TRUE it uses an optimzed algorithm, which is capable to detect Maxima at the beginning and/or the end of the data. This was a bottleneck for the old algorithm. FALSE uses the traditional method.}
+
+\item{splitting}{default FALSE, splits the data vector to achieve better computation performance. However, with this option, no other parameter than the positions of the maxima will be returned}
+
+\item{splittingSize}{default NaN, it is recommended to specify a splitting size, otherwise a splitting size of 5000 is used. The splitting size is adapted anyway, so that at least 10 local maxima are included.}
 }
 \value{
-A list with different variables: LMS ($LMS), rescaled LMS ($rLMS), position of global minimum of the row-wise summation of LMS ($minLoc), position of maxima ($maximaLoc)
+A list with different variables: LMS ($LMS), rescaled LMS ($rLMS), position of global minimum of the row-wise summation of LMS ($minLoc), position of maxima ($maximaLoc). Note that for big data vectors, only the positions of the local maxima will be returned. The others remain empty.
 }
 \description{
 Implementation of the automatic multiscale-based peak detection (AMPD) algorithm.
@@ -24,8 +29,13 @@ AMPD enables to detect peaks in noisy periodic and quasi-periodic signals
 t = seq(0,2,0.005)
 data = sin(25*t)*sin(0.3*t)+0.4*t
 dataNoise = jitter(data,1000)
-returnedList = AMPD(dataNoise,200,TRUE)
-returnedList$maximaLoc
+result = AMPD(dataNoise)
+result2 = AMPD(dataNoise, extended=TRUE)
+par(mfrow=c(1,2))
+plot(dataNoise, main="traditional algorithm", type="l")
+points(result$maximaLoc, dataNoise[result$maximaLoc],col="red")
+plot(dataNoise, main="extended algorithm", type="l")
+points(result2$maximaLoc, dataNoise[result2$maximaLoc],col="red")
 }
 \references{
 Scholkmann et al. (2012). An Efficient Algorithm for Automatic Peak Detection in Noisy Periodic and Quasi-Periodic Signals. Algorithms, 5 (4), 588-603 http://www.mdpi.com/1999-4893/5/4/588

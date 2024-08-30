@@ -4,14 +4,15 @@ Title: An Algorithm for Automatic Peak Detection in Noisy Periodic and
 Version: 0.2
 Author: Felix Scholkmann <felix.scholkmann@gmail.com>
 Maintainer: Oliver Sieber <oliver.sieber@gmail.com>
-Description: A method for automatic detection of peaks in noisy periodic and quasi-periodic signals. This method, called automatic multiscale-based peak detection (AMPD), is based on the calculation and analysis of the local maxima scalogram, a matrix comprising the scale-dependent occurrences of local maxima.
-     For further information see  <doi:10.3390/a5040588>.
+Description: A method for automatic detection of peaks in noisy
+     periodic and quasi-periodic signals. This method, called
+     automatic multiscale-based peak detection (AMPD), is based on the
+     calculation and analysis of the local maxima scalogram, a matrix
+     comprising the scale-dependent occurrences of local maxima.  For
+     further information see <doi:10.3390/a5040588>.
 Depends: R (>= 3.2.0)
 License: GPL
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 6.0.1
+RoxygenNote: 7.3.2
 NeedsCompilation: no
-Packaged: 2016-12-11 12:25:24 UTC; oliver
-Repository: CRAN
-Date/Publication: 2016-12-11 16:37:19

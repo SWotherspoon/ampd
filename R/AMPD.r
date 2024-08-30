@@ -34,11 +34,11 @@
 ##' @importFrom stats fitted lm runif sd
 ##' @export
 ##' @examples
-##' t = seq(0,2,0.005)
-##' data = sin(25*t)*sin(0.3*t)+0.4*t
-##' dataNoise = jitter(data,1000)
-##' result = AMPD(dataNoise)
-##' result2 = AMPD(dataNoise, extended=TRUE)
+##' t <- seq(0,2,0.005)
+##' data <- sin(25*t)*sin(0.3*t)+0.4*t
+##' dataNoise <- jitter(data,1000)
+##' result <- AMPD(dataNoise)
+##' result2 <- AMPD(dataNoise, extended=TRUE)
 ##' par(mfrow=c(1,2))
 ##' plot(dataNoise, main="traditional algorithm", type="l")
 ##' points(result$maximaLoc, dataNoise[result$maximaLoc],col="red")
@@ -58,7 +58,7 @@ AMPD <- function(data, L=NA, extended=FALSE, splitting=FALSE, splittingSize=NA){
   if(splitting){
     if(is.na(splittingSize)){
       splittingSizeFixed <- FALSE
-      if(length(dataDetrended) >=1000){
+      if(length(dataDetrended)>=1000){
         splittingSize <- 1000
       }
       else{
@@ -71,7 +71,7 @@ AMPD <- function(data, L=NA, extended=FALSE, splitting=FALSE, splittingSize=NA){
     p <- 0
     ScanWindow <- ceiling(splittingSize/2)-1
     start <- 1
-    end = start+splittingSize-1
+    end <- start+splittingSize-1
     while(splitting) {
       if(end>=N) {
         end <- N
@@ -93,7 +93,7 @@ AMPD <- function(data, L=NA, extended=FALSE, splitting=FALSE, splittingSize=NA){
     p <- unique(p)
     return(list("LMS" = NULL, "rLMS" = NULL, "minPos"=NULL, "maximaLoc"=p))
   } else {
-    if(is.na(L)) L = ceiling(N/2)-1
+    if(is.na(L)) L <- ceiling(N/2)-1
     return(doCalculation(dataDetrended,N,L,extended,LMS=TRUE))
   }
 }
@@ -138,7 +138,7 @@ doCalculation <- function(dataDetrended,N,L,extended,LMS) {
     list("LMS" = NULL, "rLMS" = NULL, "minPos"=NULL, "maximaLoc"=p)
 }
 
-localExtremaAdvanced = function(x, N, k, dataMin){
+localExtremaAdvanced <- function(x, N, k, dataMin){
   ## min(data) will be added to the data vector at the beginning and at the end
   alpha <- 1
   m <- runif(N)*alpha+1

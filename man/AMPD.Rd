@@ -4,8 +4,7 @@
 \alias{AMPD}
 \title{AMPD}
 \usage{
-AMPD(data, L = NA, extended = FALSE, splitting = FALSE,
-  splittingSize = NA)
+AMPD(data, L = NA, extended = FALSE, splitting = FALSE, splittingSize = NA)
 }
 \arguments{
 \item{data}{list containing noisy data with quasi-periodic
@@ -42,11 +41,11 @@ Implementation of the automatic multiscale-based peak detection
 and quasi-periodic signals
 }
 \examples{
-t = seq(0,2,0.005)
-data = sin(25*t)*sin(0.3*t)+0.4*t
-dataNoise = jitter(data,1000)
-result = AMPD(dataNoise)
-result2 = AMPD(dataNoise, extended=TRUE)
+t <- seq(0,2,0.005)
+data <- sin(25*t)*sin(0.3*t)+0.4*t
+dataNoise <- jitter(data,1000)
+result <- AMPD(dataNoise)
+result2 <- AMPD(dataNoise, extended=TRUE)
 par(mfrow=c(1,2))
 plot(dataNoise, main="traditional algorithm", type="l")
 points(result$maximaLoc, dataNoise[result$maximaLoc],col="red")

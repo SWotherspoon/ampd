@@ -23,8 +23,8 @@ better computation performance. However, with this option, no
 other parameter than the positions of the maxima will be
 returned}
 
-\item{splittingSize}{default NaN, it is recommended to specify a
-splitting size, otherwise a splitting size of 5000 is used. The
+\item{splittingSize}{default NA, it is recommended to specify a
+splitting size, otherwise a splitting size of 000 is used. The
 splitting size is adapted anyway, so that at least 10 local
 maxima are included.}
 }

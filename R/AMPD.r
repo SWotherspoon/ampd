@@ -16,8 +16,8 @@
 ##'   better computation performance. However, with this option, no
 ##'   other parameter than the positions of the maxima will be
 ##'   returned
-##' @param splittingSize default NaN, it is recommended to specify a
-##'   splitting size, otherwise a splitting size of 5000 is used. The
+##' @param splittingSize default NA, it is recommended to specify a
+##'   splitting size, otherwise a splitting size of 000 is used. The
 ##'   splitting size is adapted anyway, so that at least 10 local
 ##'   maxima are included.
 ##' @return A list with different variables: LMS ($LMS), rescaled LMS
@@ -45,7 +45,7 @@
 ##' plot(dataNoise, main="extended algorithm", type="l")
 ##' points(result2$maximaLoc, dataNoise[result2$maximaLoc],col="red")
 
-AMPD <- function(data, L=NA, extended=FALSE, splitting=FALSE, splittingSize=NA){
+AMPD <- function(data, L=NA, extended=FALSE, splitting=FALSE, splittingSize=NA) {
 
   ## (1) Linear detrending of the signal x
   N <- length(data)
@@ -55,19 +55,9 @@ AMPD <- function(data, L=NA, extended=FALSE, splitting=FALSE, splittingSize=NA){
   ## if no splittingSize is given, the algorithm starts with 1000, but
   ## will automatically adapt it to a size which will involve at least
   ## 10 maxima
-  if(splitting){
-    if(is.na(splittingSize)){
-      splittingSizeFixed <- FALSE
-      if(length(dataDetrended)>=1000){
-        splittingSize <- 1000
-      }
-      else{
-        splittingSize <- length(dataDetrended)
-      }
-    }
-    else{
-      splittingSizeFixed <- TRUE
-    }
+  if(splitting) {
+    if(is.na(splittingSize))
+      splittingSize <- min(1000,length(dataDetrended))
     p <- 0
     ScanWindow <- ceiling(splittingSize/2)-1
     start <- 1
@@ -91,24 +81,22 @@ AMPD <- function(data, L=NA, extended=FALSE, splitting=FALSE, splittingSize=NA){
       end <- start+splittingSize-1
     }
     p <- unique(p)
-    return(list("LMS" = NULL, "rLMS" = NULL, "minPos"=NULL, "maximaLoc"=p))
+    list("LMS" = NULL, "rLMS" = NULL, "minPos"=NULL, "maximaLoc"=p)
   } else {
     if(is.na(L)) L <- ceiling(N/2)-1
-    return(doCalculation(dataDetrended,N,L,extended,LMS=TRUE))
+    doCalculation(dataDetrended,N,L,extended,LMS=TRUE)
   }
 }
 
 doCalculation <- function(dataDetrended,N,L,extended,LMS) {
   ## Calculates the Local Maxima Scalogram (LMS)
   M <- array(1,c(N,L))
-  if(extended) {
-    dataMin <- min(dataDetrended)
-    M <- sapply(seq_len(L), function(k) localExtremaAdvanced(dataDetrended,N,k,dataMin))
-  } else{
+  if(extended)
+    M <- sapply(seq_len(L), function(k) localExtremaAdvanced(dataDetrended,N,k,min(dataDetrended)))
+  else
     M <- sapply(seq_len(L), function(k) localExtrema(dataDetrended,N,k))
-  }
 
-  if (extended){
+  if (extended) {
     ## weight of each row decreases with increasing row number this
     ## makes the algorithm more stable.
     colSumM <- colSums(M)
@@ -138,7 +126,7 @@ doCalculation <- function(dataDetrended,N,L,extended,LMS) {
     list("LMS" = NULL, "rLMS" = NULL, "minPos"=NULL, "maximaLoc"=p)
 }
 
-localExtremaAdvanced <- function(x, N, k, dataMin){
+localExtremaAdvanced <- function(x, N, k, dataMin) {
   ## min(data) will be added to the data vector at the beginning and at the end
   alpha <- 1
   m <- runif(N)*alpha+1
@@ -154,7 +142,6 @@ localExtrema <- function(x, N, k) {
   locMax <- logical(N)
   m <- runif(N) * alpha + 1
   locMax[(k+1):(N-k)] <- ((x[(k+1):(N-k)]>x[(1):(N-2*k)]) & (x[(k+1):(N-k)]>x[(k+1+k):(N)]))
-  m[locMax] = 0
+  m[locMax] <- 0
   return(m)
 }
-
